@@ -16,10 +16,7 @@ module.exports = function(session) {
 
 		options.levelTTLOptions = 'levelTTLOptions' in options ?
 			options.levelTTLOptions:
-			{
-				defaultTTL:     1000*60*15, // 15 minutes
-				checkFrequency: 1000*60*30  // 30 minutes
-			};
+			{};
 
 		options.prefix = 'prefix' in options ? options.prefix : '';
 
