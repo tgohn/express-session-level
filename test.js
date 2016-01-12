@@ -71,3 +71,25 @@ test('options:levelTTLOptions', function(t) {
 		'checkFrequency options should be set to levelTTL instance');
 	store.db.close(t.end);  // close leveldb and end test
 });
+
+test('maxAge ttl', function(t) {
+	var leveldb = level(tmpDir);
+	var store = new Store(leveldb, {levelTTLOptions: {checkFrequency: 100}});
+	var obj = { cookie: { maxAge: 2000 }, name: 'tj' };
+
+	store.set('123', obj, t.notOk);
+
+	setTimeout(function() {
+		store.db.get('123', function(err, data) {
+			t.notOk(err);
+			t.deepEqual(data, obj, 'it should not expire yet');
+		});
+	}, 1000);
+
+	setTimeout(function() {
+		store.db.get('123', function(err/*, data*/) {
+			t.ok(err.notFound, 'it should be expired');
+			t.end();
+		});
+	}, 3000);
+});

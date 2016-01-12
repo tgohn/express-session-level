@@ -49,9 +49,10 @@ module.exports = function(session) {
 	LevelSession.prototype.set = LevelSession.prototype.touch = function(sid, session, cb) {
 		sid = this.getKey(sid);
 		cb = cb || noop;
+		var ttl = this.getTTL(session);
 
-		debug('SET %s, %o', sid, session);
-		this.db.put(sid, session, function(err) {
+		debug('SET %s, %d, %o', sid, ttl, session);
+		this.db.put(sid, session, {ttl: ttl}, function(err) {
 			if (err) {
 				debug('SET %s ERROR %s', sid, err);
 				return cb(err);
@@ -92,6 +93,13 @@ module.exports = function(session) {
 
 	LevelSession.prototype.getKey = function(sid) {
 		return this.options.prefix + sid;
+	}
+
+	LevelSession.prototype.getTTL = function(session) {
+		var maxAge = session.cookie.maxAge;
+		return typeof maxAge === 'number' ?
+			Math.floor(maxAge) :
+			undefined;  // use level-ttl defaultTTL options
 	}
 
 	return LevelSession;
