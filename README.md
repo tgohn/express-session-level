@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/tgohn/express-session-level.svg?branch=master)](https://travis-ci.org/tgohn/express-session-level)
+[![Build Status](https://travis-ci.org/tgohn/express-session-level.svg?branch=master)](https://travis-ci.org/tgohn/express-session-level) [![npm](https://img.shields.io/npm/v/express-session-level.svg)](https://npmjs.com/package/express-session-level)
 
 [Leveldb](https://github.com/level/levelup) backed session store for your
 Express app.
